@@ -11,9 +11,9 @@
   <h1 class="bundle-title">{{ bundle.title }}</h1>
 
   <div class="bundle-pricing">
-    <span class="bundle-price">{{ bundle.price | money }}</span>
+    <span class="bundle-price price-item price-item--sale price-item--last">{{ bundle.price | money }}</span>
     {% if bundle.compare_at_price > bundle.price %}
-      <span class="bundle-compare">{{ bundle.compare_at_price | money }}</span>
+      <span class="bundle-compare price-item price-item--regular">{{ bundle.compare_at_price | money }}</span>
     {% endif %}
   </div>
   <form method="post" action="/cart/add" id="bundle-form-{{ bundle.id }}">
@@ -95,15 +95,9 @@
   gap: 0.5rem;
 }
 
-.bundle-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
 .bundle-compare {
   text-decoration: line-through;
   color: #888;
-  font-size: 1rem;
 }
 
 .bundle-select {
