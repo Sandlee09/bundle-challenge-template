@@ -26,56 +26,59 @@
     <div class="swiper-pagination"></div>
   </div>
 
-  <style>
-    .mySwiper {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      margin: auto;
-      border-radius: 10px;
-      overflow: hidden;
-    }
+<style>
+  .mySwiper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
-    .mySwiper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
+  .mySwiper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
 
-    .custom-swiper-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-      color: white;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex!important;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+  .custom-swiper-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 28px; /* smaller width */
+    height: 28px; /* smaller height */
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    font-size: 14px; /* smaller arrow icon size */
+  }
 
-    .custom-swiper-btn:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
+  .custom-swiper-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.1);
+  }
 
-    .swiper-button-prev.custom-swiper-btn {
-      left: 10px;
-    }
+  .swiper-button-prev.custom-swiper-btn {
+    left: 8px;
+  }
 
-    .swiper-button-next.custom-swiper-btn {
-      right: 10px;
-    }
+  .swiper-button-next.custom-swiper-btn {
+    right: 8px;
+  }
 
-    .swiper-pagination {
-      bottom: 10px !important;
-    }
-  </style>
+  .swiper-pagination {
+    bottom: 8px !important;
+  }
+</style>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
