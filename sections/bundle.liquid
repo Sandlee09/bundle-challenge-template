@@ -16,8 +16,6 @@
       <span class="bundle-compare">{{ bundle.compare_at_price | money }}</span>
     {% endif %}
   </div>
-  {%- assign product_form_id = 'product-form-' | append: section.id -%}
-  {% render 'product-variant-picker', product: bundle, block={} product_form_id: product_form_id %}
   <form method="post" action="/cart/add" id="bundle-form-{{ bundle.id }}">
     <input type="hidden" name="id" value="{{ bundle.selected_or_first_available_variant.id }}">
 
@@ -43,6 +41,23 @@
         {% endfor %}
       </select>
     {% endif %}
+
+    <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ bundle.name | escape }}]"
+              form="{{ }}"
+            >
+                {% for variant in bundle.variants %}
+          {% if variant.available %}
+              {% render 'product-variant-options',
+                product: bundle,
+                option: variant,
+                picker_type: 'swatch_dropdown'
+              %}
+              {% endif %}
+        {% endfor %}
+            </select>
 
     {% if has_color %}
       <label>Color</label>
