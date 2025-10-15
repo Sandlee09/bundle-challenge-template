@@ -1,4 +1,4 @@
-
+<div class="page-width">
 {% assign bundle_handle = product.metafields.custom.bundle_product %}
 {% if bundle_handle %}
   {% assign bundle = all_products[bundle_handle] %}
@@ -72,7 +72,7 @@
 
   </div>
 {% endif %}
-
+</div>
 
 {% style %}
 .bundle-section {
@@ -162,6 +162,7 @@
   margin-top: 0.5rem;
   transition: background 0.2s ease;
   min-height: 4.5rem;
+  width:100%;
 }
 
 .bundle-add-btn:hover {
