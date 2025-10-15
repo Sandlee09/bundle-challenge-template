@@ -7,10 +7,63 @@
     <div class="bundle-inner-left">
     {% render 'product-slider', product: bundle %}
     </div>
-    <div class="bundle-inner-right">
-    <p>{{ bundle.price | money }}</p>
-    <a href="{{ bundle.url }}" class="btn">View bundle</a>
-    </div>
+<div class="bundle-inner-right">
+  <h1 class="bundle-title">{{ bundle.title }}</h1>
+
+  <div class="bundle-pricing">
+    <span class="bundle-price">{{ bundle.price | money }}</span>
+    {% if bundle.compare_at_price > bundle.price %}
+      <span class="bundle-compare">{{ bundle.compare_at_price | money }}</span>
+    {% endif %}
+  </div>
+
+  <form method="post" action="/cart/add" id="bundle-form-{{ bundle.id }}">
+    <input type="hidden" name="id" value="{{ bundle.selected_or_first_available_variant.id }}">
+
+    {% assign has_size = false %}
+    {% assign has_color = false %}
+
+    {% for option in bundle.options_with_values %}
+      {% if option.name contains 'Size' %}
+        {% assign has_size = true %}
+      {% endif %}
+      {% if option.name contains 'Color' %}
+        {% assign has_color = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_size %}
+      <label for="bundle-size-select">Size</label>
+      <select name="id" id="bundle-size-select" class="bundle-select">
+        {% for variant in bundle.variants %}
+          {% if variant.available %}
+            <option value="{{ variant.id }}">{{ variant.option1 }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    {% endif %}
+
+    {% if has_color %}
+      <label>Color</label>
+      <div class="bundle-color-swatches">
+        {% for variant in bundle.variants %}
+          {% assign color_option = variant.option2 %}
+          {% if color_option %}
+            <div
+              class="color-swatch"
+              style="background-color: {{ color_option | handleize | replace: '-', '' }};"
+              title="{{ color_option }}"
+              data-variant-id="{{ variant.id }}">
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <button type="submit" class="bundle-add-btn">Add to Cart</button>
+  </form>
+</div>
+
   </div>
 {% endif %}
 
@@ -27,10 +80,80 @@
     max-width: 50%;
 }
 
+/* Bundle Right Styling */
+
 .bundle-inner-right {
-    max-width: 50%;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 320px;
 }
+
+.bundle-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.bundle-pricing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bundle-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.bundle-compare {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1rem;
+}
+
+.bundle-select {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.bundle-color-swatches {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: border 0.2s ease;
+}
+
+.color-swatch:hover {
+  border-color: #000;
+}
+
+.bundle-add-btn {
+  background-color: #111;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.bundle-add-btn:hover {
+  background-color: #333;
+}
+
 {% endstyle %}
