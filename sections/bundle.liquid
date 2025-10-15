@@ -42,23 +42,6 @@
       </select>
     {% endif %}
 
-    <select
-              id="Option-{{ section.id }}-{{ forloop.index0 }}"
-              class="select__select"
-              name="options[{{ bundle.name | escape }}]"
-              form="{{ }}"
-            >
-                {% for variant in bundle.variants %}
-          {% if variant.available %}
-              {% render 'product-variant-options',
-                product: bundle,
-                option: variant,
-                picker_type: 'swatch_dropdown'
-              %}
-              {% endif %}
-        {% endfor %}
-            </select>
-
     {% if has_color %}
       <label>Color</label>
       <div class="bundle-color-swatches">
