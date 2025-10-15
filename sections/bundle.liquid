@@ -4,7 +4,9 @@
   {% assign bundle = all_products[bundle_handle] %}
   <h3>Bundle with {{ bundle.title }}</h3>
   <div class="bundle-section">
+    <div class="bundle-inner-left">
     {% render 'product-slider', product: bundle %}
+    </div>
     <div class="bundle-inner-right">
     <p>{{ bundle.price | money }}</p>
     <a href="{{ bundle.url }}" class="btn">View bundle</a>
@@ -14,16 +16,21 @@
 
 
 {% style %}
-  .bundle-section {
+.bundle-section {
     width: 100%;
     height: fit-content;
     display: flex;
     gap: 2rem;
-  }
+}
 
-  .bundle-inner-right {
+.bundle-inner-left {
+    max-width: 50%;
+}
+
+.bundle-inner-right {
+    max-width: 50%;
     display: flex;
     flex-direction: row;
     gap: 1rem;
-  }
+}
 {% endstyle %}
