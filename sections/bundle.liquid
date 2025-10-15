@@ -11,9 +11,9 @@
   <h1 class="bundle-title">{{ bundle.title }}</h1>
 
   <div class="bundle-pricing">
-    <span class="bundle-price">{{ bundle.price | money }}</span>
+    <h2 class="bundle-price">{{ bundle.price | money }}</h2>
     {% if bundle.compare_at_price > bundle.price %}
-      <span class="bundle-compare">{{ bundle.compare_at_price | money }}</span>
+      <h2 class="bundle-compare">{{ bundle.compare_at_price | money }}</h2>
     {% endif %}
   </div>
 
@@ -96,10 +96,8 @@
   max-width: 320px;
 }
 
-.bundle-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #111;
+.bundle-inner-right h1, .bundle-inner-right h2 {
+    margin: 0px;
 }
 
 .bundle-pricing {
@@ -108,15 +106,10 @@
   gap: 0.5rem;
 }
 
-.bundle-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
 
 .bundle-compare {
   text-decoration: line-through;
   color: #888;
-  font-size: 1rem;
 }
 
 .bundle-select {
