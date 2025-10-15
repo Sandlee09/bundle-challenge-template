@@ -1,22 +1,13 @@
 
-
-{% if section.settings.selected_product %}
-  {% assign product = all_products[section.settings.selected_product] %}
-
-  {% comment %} <div class="custom-product">
-    <h2>{{ product.title }}</h2>
-    <img src="{{ product.featured_image | img_url: '500x' }}" alt="{{ product.title }}">
-    <p>{{ product.price | money }}</p>
-    <a href="{{ product.url }}" class="btn">View product</a>
-  </div> {% endcomment %}
-
-  <div class="bundle-container">
-<div class="bundle-left-container">
-{% render 'product-slider', product: product %}    
-</div>    
-<div class="bundle-right-container">
-    </div>
-</div>
+{% assign bundle_handle = product.metafields.custom.bundle_product %}
+{% if bundle_handle %}
+  {% assign bundle = all_products[bundle_handle] %}
+  <div class="bundle-section">
+    <h3>Bundle with {{ bundle.title }}</h3>
+    {% render 'product-slider', product: bundle %}
+    <p>{{ bundle.price | money }}</p>
+    <a href="{{ bundle.url }}" class="btn">View bundle</a>
+  </div>
 {% endif %}
 
 
