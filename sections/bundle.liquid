@@ -33,7 +33,7 @@
     {% endfor %}
 
     {% if size_option_index != -1 %}
-      <label for="bundle-size-select-{{ bundle.id }}">Size</label>
+      <h3 for="bundle-size-select-{{ bundle.id }}">Size</h3>
       <select name="id" id="bundle-size-select-{{ bundle.id }}" class="bundle-select">
         {% assign seen_sizes = '' %}
         {% for variant in bundle.variants %}
@@ -47,7 +47,7 @@
     {% endif %}
 
     {% if color_option_index != -1 %}
-      <label>Color</label>
+      <h3>Color</h3>
       <div class="bundle-color-swatches" id="bundle-color-swatches-{{ bundle.id }}">
         {% assign seen_colors = '' %}
         {% for variant in bundle.variants %}
@@ -124,8 +124,7 @@
 .bundle-color-swatches {
   display: flex;
   gap: 1rem;
-  margin-top: 0.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .color-swatch {
