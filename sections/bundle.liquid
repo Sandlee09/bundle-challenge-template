@@ -1,4 +1,26 @@
-<h1>TESTINGGGGGGG</h1>
+
+
+{% if section.settings.selected_product %}
+  {% assign product = all_products[section.settings.selected_product] %}
+
+  {% comment %} <div class="custom-product">
+    <h2>{{ product.title }}</h2>
+    <img src="{{ product.featured_image | img_url: '500x' }}" alt="{{ product.title }}">
+    <p>{{ product.price | money }}</p>
+    <a href="{{ product.url }}" class="btn">View product</a>
+  </div> {% endcomment %}
+
+  <div class="bundle-container">
+<div class="bundle-left-container">
+{% render 'product-slider', product: product %}    
+</div>    
+<div class="bundle-right-container">
+    </div>
+</div>>
+{% else %}
+  <p>Please select a product in the section settings.</p>
+{% endif %}
+
 
 
 {% schema %}
