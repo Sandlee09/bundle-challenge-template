@@ -2,10 +2,28 @@
 {% assign bundle_handle = product.metafields.custom.bundle_product %}
 {% if bundle_handle %}
   {% assign bundle = all_products[bundle_handle] %}
+  <h3>Bundle with {{ bundle.title }}</h3>
   <div class="bundle-section">
-    <h3>Bundle with {{ bundle.title }}</h3>
     {% render 'product-slider', product: bundle %}
+    <div class="bundle-inner-right">
     <p>{{ bundle.price | money }}</p>
     <a href="{{ bundle.url }}" class="btn">View bundle</a>
+    </div>
   </div>
 {% endif %}
+
+
+{% style %}
+  .bundle-section {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 2rem;
+  }
+
+  .bundle-inner-right {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+{% endstyle %}
