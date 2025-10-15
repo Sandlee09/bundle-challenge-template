@@ -1,0 +1,43 @@
+{% comment %}
+  Snippet: product-slider.liquid
+  Usage: {% render 'product-slider', product: product %}
+{% endcomment %}
+
+{% if product and product.images.size > 0 %}
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for image in product.images %}
+        <div class="swiper-slide">
+          <img src="{{ image | img_url: '800x' }}" alt="{{ product.title | escape }}" loading="lazy">
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+
+    <!-- Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      new Swiper('.mySwiper', {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
+{% else %}
+  <p>No images available for this product.</p>
+{% endif %}
