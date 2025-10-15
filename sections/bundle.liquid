@@ -11,50 +11,56 @@
   <h1 class="bundle-title">{{ bundle.title }}</h1>
 
   <div class="bundle-pricing">
-    <h2 class="bundle-price price-item price-item--sale price-item--last">{{ bundle.price | money }}</h2>
+    <span class="bundle-price">{{ bundle.price | money }}</span>
     {% if bundle.compare_at_price > bundle.price %}
-      <h2 class="bundle-compare price-item price-item--regular">{{ bundle.compare_at_price | money }}</h2>
+      <span class="bundle-compare">{{ bundle.compare_at_price | money }}</span>
     {% endif %}
   </div>
-  <form method="post" action="/cart/add" id="bundle-form-{{ bundle.id }}">
-    <input type="hidden" name="id" value="{{ bundle.selected_or_first_available_variant.id }}">
 
-    {% assign has_size = false %}
-    {% assign has_color = false %}
+  <form method="post" action="/cart/add" id="bundle-form-{{ bundle.id }}">
+    <input type="hidden" name="id" id="bundle-variant-id-{{ bundle.id }}" value="{{ bundle.selected_or_first_available_variant.id }}">
+
+    {% assign size_option_index = -1 %}
+    {% assign color_option_index = -1 %}
 
     {% for option in bundle.options_with_values %}
       {% if option.name contains 'Size' %}
-        {% assign has_size = true %}
+        {% assign size_option_index = forloop.index0 %}
       {% endif %}
       {% if option.name contains 'Color' %}
-        {% assign has_color = true %}
+        {% assign color_option_index = forloop.index0 %}
       {% endif %}
     {% endfor %}
-              
-    {% if has_size %}
-      <label for="bundle-size-select">Size</label>
-      <select name="id" id="bundle-size-select" class="bundle-select">
+
+    {% if size_option_index != -1 %}
+      <label for="bundle-size-select-{{ bundle.id }}">Size</label>
+      <select name="id" id="bundle-size-select-{{ bundle.id }}" class="bundle-select">
+        {% assign seen_sizes = '' %}
         {% for variant in bundle.variants %}
-          {% if variant.available %}
-            <option value="{{ variant.id }}">{{ variant.option1 }}</option>
-          {% endif %}
+          {% assign size_value = variant.options[size_option_index] %}
+          {% unless seen_sizes contains size_value %}
+            {% assign seen_sizes = seen_sizes | append: size_value | append: ',' %}
+            <option value="{{ variant.id }}">{{ size_value }}</option>
+          {% endunless %}
         {% endfor %}
       </select>
     {% endif %}
 
-    {% if has_color %}
+    {% if color_option_index != -1 %}
       <label>Color</label>
-      <div class="bundle-color-swatches">
+      <div class="bundle-color-swatches" id="bundle-color-swatches-{{ bundle.id }}">
+        {% assign seen_colors = '' %}
         {% for variant in bundle.variants %}
-          {% assign color_option = variant.option2 %}
-          {% if color_option %}
+          {% assign color_value = variant.options[color_option_index] %}
+          {% unless seen_colors contains color_value %}
+            {% assign seen_colors = seen_colors | append: color_value | append: ',' %}
             <div
               class="color-swatch"
-              style="background-color: {{ color_option | handleize | replace: '-', '' }};"
-              title="{{ color_option }}"
+              style="background-color: {{ color_value | downcase }};"
+              title="{{ color_value }}"
               data-variant-id="{{ variant.id }}">
             </div>
-          {% endif %}
+          {% endunless %}
         {% endfor %}
       </div>
     {% endif %}
@@ -62,6 +68,7 @@
     <button type="submit" class="bundle-add-btn">Add to Cart</button>
   </form>
 </div>
+
 
   </div>
 {% endif %}
@@ -89,8 +96,10 @@
   max-width: 320px;
 }
 
-.bundle-inner-right h1, .bundle-inner-right h2 {
-    margin: 0px
+.bundle-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #111;
 }
 
 .bundle-pricing {
@@ -99,9 +108,15 @@
   gap: 0.5rem;
 }
 
+.bundle-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .bundle-compare {
   text-decoration: line-through;
   color: #888;
+  font-size: 1rem;
 }
 
 .bundle-select {
@@ -124,11 +139,12 @@
   border-radius: 50%;
   border: 1px solid #ddd;
   cursor: pointer;
-  transition: border 0.2s ease;
+  transition: border 0.2s ease, transform 0.2s ease;
 }
 
 .color-swatch:hover {
   border-color: #000;
+  transform: scale(1.1);
 }
 
 .bundle-add-btn {
@@ -146,5 +162,6 @@
 .bundle-add-btn:hover {
   background-color: #333;
 }
+
 
 {% endstyle %}
