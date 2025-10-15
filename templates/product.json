@@ -82,6 +82,11 @@
         "padding_bottom": 12
       }
     },
+     "bundle": {
+      "type": "bundle",
+      "settings": {
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -103,6 +108,7 @@
   },
   "order": [
     "main",
+    "bundle",
     "related-products"
   ]
 }
