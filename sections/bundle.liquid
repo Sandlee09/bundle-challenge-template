@@ -34,13 +34,13 @@
 
     {% if size_option_index != -1 %}
       <h3 for="bundle-size-select-{{ bundle.id }}">Size</h3>
-      <select name="id" id="bundle-size-select-{{ bundle.id }}" class="bundle-select">
+      <select name="options[Size]" id="bundle-size-select-{{ bundle.id }}" class="bundle-select">
         {% assign seen_sizes = '' %}
         {% for variant in bundle.variants %}
           {% assign size_value = variant.options[size_option_index] %}
           {% unless seen_sizes contains size_value %}
             {% assign seen_sizes = seen_sizes | append: size_value | append: ',' %}
-            <option value="{{ variant.id }}">{{ size_value }}</option>
+            <option value="{{ size_value }}">{{ size_value }}</option>
           {% endunless %}
         {% endfor %}
       </select>
@@ -48,6 +48,7 @@
 
     {% if color_option_index != -1 %}
       <h3>Color</h3>
+      <input type="hidden" name="options[Color]" id="bundle-color-input-{{ bundle.id }}" value="{{ bundle.selected_or_first_available_variant.options[color_option_index] }}">
       <div class="bundle-color-swatches" id="bundle-color-swatches-{{ bundle.id }}">
         {% assign seen_colors = '' %}
         {% for variant in bundle.variants %}
@@ -55,10 +56,10 @@
           {% unless seen_colors contains color_value %}
             {% assign seen_colors = seen_colors | append: color_value | append: ',' %}
             <div
-              class="color-swatch"
+              class="color-swatch {% if forloop.first %}active{% endif %}"
               style="background-color: {{ color_value | downcase }};"
               title="{{ color_value }}"
-              data-variant-id="{{ variant.id }}">
+              data-color="{{ color_value }}">
             </div>
           {% endunless %}
         {% endfor %}
@@ -73,6 +74,56 @@
   </div>
 {% endif %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const bundleId = {{ bundle.id | json }};
+  const form = document.getElementById('bundle-form-' + bundleId);
+  const variantIdInput = document.getElementById('bundle-variant-id-' + bundleId);
+  const sizeSelect = document.getElementById('bundle-size-select-' + bundleId);
+  const colorInput = document.getElementById('bundle-color-input-' + bundleId);
+  const colorSwatches = document.querySelectorAll('#bundle-color-swatches-' + bundleId + ' .color-swatch');
+  
+  const variants = {{ bundle.variants | json }};
+  
+  function findVariant(size, color) {
+    return variants.find(v => {
+      const matchSize = !size || v.options.includes(size);
+      const matchColor = !color || v.options.includes(color);
+      return matchSize && matchColor;
+    });
+  }
+  
+  function updateVariant() {
+    const selectedSize = sizeSelect ? sizeSelect.value : null;
+    const selectedColor = colorInput ? colorInput.value : null;
+    const variant = findVariant(selectedSize, selectedColor);
+    
+    if (variant) {
+      variantIdInput.value = variant.id;
+    }
+  }
+  
+  // Color swatch click handler
+  colorSwatches.forEach(swatch => {
+    swatch.addEventListener('click', function() {
+      colorSwatches.forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+      
+      const color = this.getAttribute('data-color');
+      if (colorInput) {
+        colorInput.value = color;
+      }
+      updateVariant();
+    });
+  });
+  
+  // Size select change handler
+  if (sizeSelect) {
+    sizeSelect.addEventListener('change', updateVariant);
+  }
+});
+</script>
 
 {% style %}
 .bundle-section {
@@ -150,6 +201,11 @@
 .color-swatch:hover {
   border-color: #000;
   transform: scale(1.1);
+}
+
+.color-swatch.active {
+  border: 3px solid #000;
+  transform: scale(1.15);
 }
 
 .bundle-add-btn {
