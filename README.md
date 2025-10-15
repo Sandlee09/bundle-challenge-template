@@ -33,6 +33,41 @@ Find the detailed briefing, evaluation criteria, and mock-ups on Notion:
 
 ---
 
+## Bundle Product Implementation
+
+This theme now includes bundle product functionality with the following features:
+
+### Bundle Card Features
+- **Swiper.js Integration**: Bundle product images are displayed in a carousel using Swiper.js
+- **Bundle Pricing**: Shows bundle price, original price, and discount percentage
+- **Bundle Detection**: Automatically detects products with associated bundle products via:
+  - Metafields: `custom.bundle_product` (product handle)
+  - Product tags: `bundle:product-handle`
+- **Responsive Design**: Bundle cards work seamlessly on mobile and desktop
+- **Accessibility**: Proper ARIA labels and keyboard navigation
+
+### Files Added/Modified
+- `snippets/card-bundle.liquid` - Bundle card component with Swiper.js
+- `sections/bundle-products.liquid` - Bundle products section
+- `assets/component-bundle-card.css` - Bundle card styling
+- `assets/section-bundle-products.css` - Section styling
+- `assets/bundle-card.js` - JavaScript functionality
+- `snippets/bundle-data.liquid` - Bundle data structure
+- `snippets/card-product.liquid` - Updated to detect bundle products
+- `config/settings_schema.json` - Added bundle settings
+
+### Setup Instructions
+1. **Enable Bundle Products**: Go to Theme Settings > Bundle Products and enable the functionality
+2. **Configure Detection Method**: Choose between metafields, tags, or both
+3. **Add Bundle Products**: 
+   - Set metafield `custom.bundle_product` to the bundle product handle, OR
+   - Add tag `bundle:product-handle` to products
+4. **Customize Display**: Configure discount display, card style, and Swiper settings
+
+### Bundle Backend Components
+- **Bundle Function**: CartTransform function for bundle pricing
+- **Bundle Checkout Extension**: UI Extension for checkout bundle display
+
 ## Minimal best practices
 
 - Small, descriptive commits.  

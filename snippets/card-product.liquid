@@ -39,7 +39,45 @@
     if ratio == 0 or ratio == null
       assign ratio = 1
     endif
+    
+    # Check if product has a bundle product attached
+    assign bundle_product = blank
+    if card_product.metafields.custom.bundle_product
+      assign bundle_product_handle = card_product.metafields.custom.bundle_product
+      assign bundle_product = all_products[bundle_product_handle]
+    endif
+    
+    # Check if product has bundle tag
+    if bundle_product == blank
+      for tag in card_product.tags
+        if tag contains 'bundle:'
+          assign bundle_handle = tag | remove: 'bundle:'
+          assign bundle_product = all_products[bundle_handle]
+          break
+        endif
+      endfor
+    endif
   -%}
+  
+  {%- if bundle_product and bundle_product != empty -%}
+    {% render 'card-bundle',
+      card_product: card_product,
+      bundle_product: bundle_product,
+      media_aspect_ratio: media_aspect_ratio,
+      image_shape: image_shape,
+      show_secondary_image: show_secondary_image,
+      show_vendor: show_vendor,
+      show_rating: show_rating,
+      extend_height: extend_height,
+      lazy_load: lazy_load,
+      skip_styles: skip_styles,
+      quick_add: quick_add,
+      section_id: section_id,
+      horizontal_class: horizontal_class,
+      horizontal_quick_add: horizontal_quick_add,
+      placeholder_image: placeholder_image
+    %}
+  {%- else -%}
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div
       class="
@@ -621,4 +659,5 @@
       </div>
     </div>
   </div>
+  {%- endif -%}
 {%- endif -%}

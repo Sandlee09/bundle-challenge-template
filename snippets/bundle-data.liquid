@@ -1,0 +1,170 @@
+{% comment %}
+  Bundle Data Structure
+  Handles bundle product data structure and calculations
+
+  Accepts:
+  - product: {Object} Product Liquid object
+  - bundle_product: {Object} Bundle Product Liquid object (optional)
+
+  Returns:
+  - bundle_data: {Object} Bundle data object with calculations
+
+  Usage:
+  {% render 'bundle-data', product: product, bundle_product: bundle_product %}
+{% endcomment %}
+
+{%- liquid
+  assign bundle_data = blank
+  
+  if product and bundle_product
+    # Calculate individual product total
+    assign individual_total = 0
+    for variant in bundle_product.variants
+      assign individual_total = individual_total | plus: variant.price
+    endfor
+    
+    # Get bundle price
+    assign bundle_price = bundle_product.price
+    
+    # Calculate discount
+    assign discount_amount = individual_total | minus: bundle_price
+    assign discount_percentage = discount_amount | times: 100 | divided_by: individual_total
+    
+    # Calculate savings
+    assign savings_amount = discount_amount
+    
+    # Check if bundle is available
+    assign bundle_available = false
+    for variant in bundle_product.variants
+      if variant.available
+        assign bundle_available = true
+        break
+      endif
+    endfor
+    
+    # Get bundle product images
+    assign bundle_images = bundle_product.media
+    
+    # Get bundle product title
+    assign bundle_title = bundle_product.title
+    
+    # Get bundle product description
+    assign bundle_description = bundle_product.description
+    
+    # Get bundle product vendor
+    assign bundle_vendor = bundle_product.vendor
+    
+    # Get bundle product type
+    assign bundle_type = bundle_product.type
+    
+    # Get bundle product tags
+    assign bundle_tags = bundle_product.tags
+    
+    # Get bundle product collections
+    assign bundle_collections = bundle_product.collections
+    
+    # Get bundle product variants
+    assign bundle_variants = bundle_product.variants
+    
+    # Get bundle product options
+    assign bundle_options = bundle_product.options
+    
+    # Get bundle product metafields
+    assign bundle_metafields = bundle_product.metafields
+    
+    # Create bundle data object
+    assign bundle_data = {
+      'product': product,
+      'bundle_product': bundle_product,
+      'individual_total': individual_total,
+      'bundle_price': bundle_price,
+      'discount_amount': discount_amount,
+      'discount_percentage': discount_percentage,
+      'savings_amount': savings_amount,
+      'bundle_available': bundle_available,
+      'bundle_images': bundle_images,
+      'bundle_title': bundle_title,
+      'bundle_description': bundle_description,
+      'bundle_vendor': bundle_vendor,
+      'bundle_type': bundle_type,
+      'bundle_tags': bundle_tags,
+      'bundle_collections': bundle_collections,
+      'bundle_variants': bundle_variants,
+      'bundle_options': bundle_options,
+      'bundle_metafields': bundle_metafields
+    }
+  endif
+-%}
+
+{%- if bundle_data -%}
+  <script type="application/json" data-bundle-data>
+    {
+      "product_id": {{ bundle_data.product.id | json }},
+      "bundle_product_id": {{ bundle_data.bundle_product.id | json }},
+      "individual_total": {{ bundle_data.individual_total | json }},
+      "bundle_price": {{ bundle_data.bundle_price | json }},
+      "discount_amount": {{ bundle_data.discount_amount | json }},
+      "discount_percentage": {{ bundle_data.discount_percentage | json }},
+      "savings_amount": {{ bundle_data.savings_amount | json }},
+      "bundle_available": {{ bundle_data.bundle_available | json }},
+      "bundle_title": {{ bundle_data.bundle_title | json }},
+      "bundle_description": {{ bundle_data.bundle_description | json }},
+      "bundle_vendor": {{ bundle_data.bundle_vendor | json }},
+      "bundle_type": {{ bundle_data.bundle_type | json }},
+      "bundle_tags": {{ bundle_data.bundle_tags | json }},
+      "bundle_collections": [
+        {%- for collection in bundle_data.bundle_collections -%}
+          {
+            "id": {{ collection.id | json }},
+            "title": {{ collection.title | json }},
+            "handle": {{ collection.handle | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "bundle_variants": [
+        {%- for variant in bundle_data.bundle_variants -%}
+          {
+            "id": {{ variant.id | json }},
+            "title": {{ variant.title | json }},
+            "price": {{ variant.price | json }},
+            "compare_at_price": {{ variant.compare_at_price | json }},
+            "available": {{ variant.available | json }},
+            "sku": {{ variant.sku | json }},
+            "barcode": {{ variant.barcode | json }},
+            "inventory_quantity": {{ variant.inventory_quantity | json }},
+            "inventory_management": {{ variant.inventory_management | json }},
+            "inventory_policy": {{ variant.inventory_policy | json }},
+            "fulfillment_service": {{ variant.fulfillment_service | json }},
+            "requires_shipping": {{ variant.requires_shipping | json }},
+            "taxable": {{ variant.taxable | json }},
+            "weight": {{ variant.weight | json }},
+            "weight_unit": {{ variant.weight_unit | json }},
+            "option1": {{ variant.option1 | json }},
+            "option2": {{ variant.option2 | json }},
+            "option3": {{ variant.option3 | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "bundle_options": [
+        {%- for option in bundle_data.bundle_options -%}
+          {
+            "name": {{ option.name | json }},
+            "values": {{ option.values | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "bundle_images": [
+        {%- for image in bundle_data.bundle_images -%}
+          {
+            "id": {{ image.id | json }},
+            "alt": {{ image.alt | json }},
+            "width": {{ image.width | json }},
+            "height": {{ image.height | json }},
+            "url": {{ image | image_url | json }},
+            "srcset": "{%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}{%- if image.width >= 360 -%}{{ image | image_url: width: 360 }} 360w,{%- endif -%}{%- if image.width >= 533 -%}{{ image | image_url: width: 533 }} 533w,{%- endif -%}{%- if image.width >= 720 -%}{{ image | image_url: width: 720 }} 720w,{%- endif -%}{%- if image.width >= 940 -%}{{ image | image_url: width: 940 }} 940w,{%- endif -%}{%- if image.width >= 1066 -%}{{ image | image_url: width: 1066 }} 1066w,{%- endif -%}{{ image | image_url }} {{ image.width }}w"
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

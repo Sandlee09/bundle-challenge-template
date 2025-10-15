@@ -1451,5 +1451,120 @@
         "default": "scheme-1"
       }
     ]
+  },
+  {
+    "name": "Bundle Products",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Bundle Product Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_bundle_products",
+        "label": "Enable Bundle Products",
+        "default": true,
+        "info": "Enable bundle product functionality throughout the theme"
+      },
+      {
+        "type": "select",
+        "id": "bundle_discount_display",
+        "options": [
+          {
+            "value": "percentage",
+            "label": "Show percentage discount"
+          },
+          {
+            "value": "amount",
+            "label": "Show amount saved"
+          },
+          {
+            "value": "both",
+            "label": "Show both percentage and amount"
+          }
+        ],
+        "default": "both",
+        "label": "Bundle Discount Display"
+      },
+      {
+        "type": "checkbox",
+        "id": "bundle_show_savings",
+        "label": "Show savings amount",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bundle_show_original_price",
+        "label": "Show original price",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Bundle Card Settings"
+      },
+      {
+        "type": "select",
+        "id": "bundle_card_style",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "card",
+            "label": "Card"
+          }
+        ],
+        "default": "card",
+        "label": "Bundle Card Style"
+      },
+      {
+        "type": "checkbox",
+        "id": "bundle_show_swiper_navigation",
+        "label": "Show Swiper navigation arrows",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bundle_show_swiper_pagination",
+        "label": "Show Swiper pagination dots",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "bundle_swiper_autoplay_delay",
+        "min": 0,
+        "max": 10000,
+        "step": 500,
+        "unit": "ms",
+        "default": 3000,
+        "label": "Bundle Swiper Autoplay Delay",
+        "info": "Set to 0 to disable autoplay"
+      },
+      {
+        "type": "header",
+        "content": "Bundle Product Detection"
+      },
+      {
+        "type": "select",
+        "id": "bundle_detection_method",
+        "options": [
+          {
+            "value": "metafields",
+            "label": "Use metafields (custom.bundle_product)"
+          },
+          {
+            "value": "tags",
+            "label": "Use product tags (bundle:product-handle)"
+          },
+          {
+            "value": "both",
+            "label": "Use both metafields and tags"
+          }
+        ],
+        "default": "both",
+        "label": "Bundle Detection Method"
+      }
+    ]
   }
 ]
