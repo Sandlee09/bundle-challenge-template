@@ -4,22 +4,78 @@
 {% endcomment %}
 
 {% if product and product.images.size > 0 %}
-  <div class="swiper mySwiper">
+  <div class="swiper mySwiper relative">
     <div class="swiper-wrapper">
       {% for image in product.images %}
         <div class="swiper-slide">
-          <img src="{{ image | img_url: '800x' }}" alt="{{ product.title | escape }}" loading="lazy">
+          <img
+            src="{{ image | img_url: '800x' }}"
+            alt="{{ product.title | escape }}"
+            loading="lazy"
+            class="w-full object-cover"
+          >
         </div>
       {% endfor %}
     </div>
 
     <!-- Navigation buttons -->
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-prev custom-swiper-btn"></div>
+    <div class="swiper-button-next custom-swiper-btn"></div>
 
     <!-- Pagination -->
     <div class="swiper-pagination"></div>
   </div>
+
+  <style>
+    .mySwiper {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .mySwiper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .custom-swiper-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .custom-swiper-btn:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .swiper-button-prev.custom-swiper-btn {
+      left: 10px;
+    }
+
+    .swiper-button-next.custom-swiper-btn {
+      right: 10px;
+    }
+
+    .swiper-pagination {
+      bottom: 10px !important;
+    }
+  </style>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -35,6 +91,11 @@
           el: '.swiper-pagination',
           clickable: true,
         },
+        autoplay: {
+          delay: 3000, // 3 seconds
+          disableOnInteraction: false, // keeps autoplay after manual swipe
+        },
+        speed: 600, // smooth transition
       });
     });
   </script>
