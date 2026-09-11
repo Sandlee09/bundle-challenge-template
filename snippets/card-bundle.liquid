@@ -278,7 +278,7 @@
         <!-- Bundle Add to Cart -->
         <div class="bundle-add-to-cart">
           <product-form data-section-id="{{ section.id }}">
-            {%- form 'product', bundle_product, id: 'bundle-form-' | append: section_id | append: '-' | append: card_product.id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            {%- form card_product.id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
               <input
                 type="hidden"
                 name="id"
@@ -384,3 +384,16 @@
     </div>
   </div>
 {%- endif -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- form 'product', bundle_product, id: 'bundle-form-' | append: section_id
+    | append: '-' | append: card_product.id, class: 'form', novalidate: 'novalidate',
+    data-type: 'add-to-cart-form' -%}"
+  to: "{%- form card_product.id, class: 'form', novalidate: 'novalidate', data-type:
+    'add-to-cart-form' -%}"
+  position: 15817..15917
+{% endcomment %}
